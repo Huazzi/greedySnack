@@ -12,7 +12,77 @@ let dx = 0;
 let dy = 0;
 let score = 0;
 let gameRunning = false;
+let touchStartX = 0;
+let touchStartY = 0;
 
+// 触摸事件处理
+canvas.addEventListener('touchstart', handleTouchStart, false);
+canvas.addEventListener('touchmove', handleTouchMove, false);
+
+function handleTouchStart(event) {
+  event.preventDefault(); // 阻止默认触摸行为
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+}
+
+function handleTouchMove(event) {
+  if (!gameRunning) return;
+  event.preventDefault(); // 阻止默认触摸行为
+
+  const touchEndX = event.touches[0].clientX;
+  const touchEndY = event.touches[0].clientY;
+
+  const diffX = touchEndX - touchStartX;
+  const diffY = touchEndY - touchStartY;
+
+  // 判断滑动方向
+  if (Math.abs(diffX) > Math.abs(diffY)) {
+    // 水平滑动
+    if (diffX > 0 && dx !== -1) {
+      dx = 1;
+      dy = 0;
+    } else if (diffX < 0 && dx !== 1) {
+      dx = -1;
+      dy = 0;
+    }
+  } else {
+    // 垂直滑动
+    if (diffY > 0 && dy !== -1) {
+      dx = 0;
+      dy = 1;
+    } else if (diffY < 0 && dy !== 1) {
+      dx = 0;
+      dy = -1;
+    }
+  }
+
+  touchStartX = touchEndX;
+  touchStartY = touchEndY;
+}
+
+// 新增鼠标点击方向控制函数
+function changeDirectionByButton(direction) {
+  if (direction === 'left' && dx !== 1) {
+    dx = -1;
+    dy = 0;
+  } else if (direction === 'up' && dy !== 1) {
+    dx = 0;
+    dy = -1;
+  } else if (direction === 'down' && dy !== -1) {
+    dx = 0;
+    dy = 1;
+  } else if (direction === 'right' && dx !== -1) {
+    dx = 1;
+    dy = 0;
+  }
+}
+
+// 触摸移动控制函数也保留
+function changeDirectionByTouch(direction) {
+  changeDirectionByButton(direction);
+}
+
+// 其余代码保持与原代码完全相同
 function drawGame() {
   if (!gameRunning) return;
 
@@ -22,7 +92,7 @@ function drawGame() {
   drawFood();
   checkCollision();
   updateScore();
-  setTimeout(drawGame, 150); // 改为更小的值来提高更新速度，但要注意不要太快，会导致小蛇移动过快
+  setTimeout(drawGame, 200);
 }
 
 function clearCanvas() {
@@ -155,22 +225,6 @@ function changeDirection(event) {
   if (keyPressed === DOWN_KEY && !goingUp) {
     dx = 0;
     dy = 1;
-  }
-}
-
-function changeDirectionByButton(direction) {
-  if (direction === 'left' && dx !== 1) {
-    dx = -0.75;
-    dy = 0;
-  } else if (direction === 'up' && dy !== 1) {
-    dx = 0;
-    dy = -0.75;
-  } else if (direction === 'down' && dy !== -1) {
-    dx = 0;
-    dy = 0.75;
-  } else if (direction === 'right' && dx !== -1) {
-    dx = 0.75;
-    dy = 0;
   }
 }
 
