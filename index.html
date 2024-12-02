@@ -17,14 +17,18 @@
         <button id="startBtn">开始游戏</button>
       </div>
       <div class="controls">
-        <button id="up" class="control-btn" onclick="changeDirectionByButton('up')">↑</button>
-        <button id="left" class="control-btn" onclick="changeDirectionByButton('left')">←</button>
-        <button id="right" class="control-btn" onclick="changeDirectionByButton('right')">→</button>
-        <button id="down" class="control-btn" onclick="changeDirectionByButton('down')">↓</button>
+        <button id="up" class="control-btn" ontouchstart="changeDirectionByTouch('up')"
+          onclick="changeDirectionByButton('up')">↑</button>
+        <button id="left" class="control-btn" ontouchstart="changeDirectionByTouch('left')"
+          onclick="changeDirectionByButton('left')">←</button>
+        <button id="right" class="control-btn" ontouchstart="changeDirectionByTouch('right')"
+          onclick="changeDirectionByButton('right')">→</button>
+        <button id="down" class="control-btn" ontouchstart="changeDirectionByTouch('down')"
+          onclick="changeDirectionByButton('down')">↓</button>
       </div>
     </div>
   </div>
-  <script src="./build/script.js" type="module"></script>
+  <script src="./build/script.js"></script>
 </body>
 
 </html>
